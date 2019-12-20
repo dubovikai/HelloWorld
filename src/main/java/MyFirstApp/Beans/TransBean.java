@@ -1,5 +1,6 @@
 package MyFirstApp.Beans;
 
+import MyFirstApp.AppMessages.Root;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
@@ -11,7 +12,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class Trans implements Processor {
+public class TransBean implements Processor {
 
 	public Root ConvertStringXMLToRoot(String txt) throws JAXBException {
 		StringReader reader = new StringReader(txt);

@@ -1,3 +1,5 @@
+package MyFirstApp.AppMessages;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
