@@ -1,1 +1,1 @@
-Hello git, java, spring, camel, jaxb
+Hello git, java, spring, camel, jaxb, javadoc
