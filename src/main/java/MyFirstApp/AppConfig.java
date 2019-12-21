@@ -2,24 +2,27 @@ package MyFirstApp;
 
 import MyFirstApp.Beans.TransBean;
 
-import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.CamelContext;
 import org.apache.camel.component.activemq.ActiveMQComponent;
-import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.apache.camel.component.activemq.ActiveMQComponent.activeMQComponent;
 
 @Configuration
 @ComponentScan
+@PropertySource("app.properties")
 public class AppConfig extends CamelConfiguration{
+
+	@Autowired
+	private Environment env;
 
 	@Bean(name = {"getTransBean", "TransBean"}, initMethod = "init")
 	public MyFirstApp.Beans.TransBean TransBean() {
@@ -40,7 +43,11 @@ public class AppConfig extends CamelConfiguration{
 	private AppConfig.AppCamelRouteBean route;
 
 	@Override
-	public List<RouteBuilder> routes(){
-		return Arrays.asList(route);
+	protected void setupCamelContext(CamelContext camelContext) throws Exception {
+		// setup the ActiveMQ component
+		ActiveMQComponent compMQ =  activeMQComponent(env.getProperty("amqhost.url"));
+		compMQ.setUsername(env.getProperty("username"));
+		compMQ.setPassword(env.getProperty("password"));
+		camelContext.addComponent("activemq", compMQ);
 	}
 }
