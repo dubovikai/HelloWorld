@@ -9,11 +9,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.xml.bind.JAXBException;
 
+@PropertySource("app.properties")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=MyFirstApp.AppConfig.class)
 public class CamelCTXTest extends CamelTestSupport {
@@ -39,13 +42,16 @@ public class CamelCTXTest extends CamelTestSupport {
 		};
 	}
 
+	@Autowired
+	Environment env;
+
 	@Test
 	public void testCTX() throws InterruptedException, JAXBException {
 		Root objSend = new Root();
 		objSend.setA("TestMessage");
 
 		Root objReceive = new Root();
-		objReceive.setA("TestMessage - Дичь");
+		objReceive.setA("TestMessage"+env.getProperty("txttoadd"));
 
 		String TestMsgSend = tb.ConvertRootToStringXML(objSend);
 

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import static org.apache.camel.component.activemq.ActiveMQComponent.activeMQComponent;
 
+//TODO This needs to be documented
 @Configuration
 @ComponentScan
 @PropertySource("app.properties")

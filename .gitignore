@@ -2,6 +2,7 @@
 /target/
 /.idea/
 /out/
+/doc/
 *.txt
 !Readme.txt
 *.cer
