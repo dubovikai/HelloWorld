@@ -1,7 +1,6 @@
 package MyFirstApp;
 
 import MyFirstApp.Beans.TransBean;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.activemq.ActiveMQComponent;
 import org.apache.camel.spring.SpringRouteBuilder;
@@ -47,6 +46,7 @@ public class AppConfig extends CamelConfiguration{
 	protected void setupCamelContext(CamelContext camelContext) throws Exception {
 		// setup the ActiveMQ component
 		ActiveMQComponent compMQ =  activeMQComponent(env.getProperty("amqhost.url"));
+		compMQ.setTestConnectionOnStartup(true);
 		compMQ.setUsername(env.getProperty("username"));
 		compMQ.setPassword(env.getProperty("password"));
 		camelContext.addComponent("activemq", compMQ);
