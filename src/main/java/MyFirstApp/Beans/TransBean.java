@@ -1,6 +1,7 @@
 package MyFirstApp.Beans;
 
 import MyFirstApp.AppMessages.Root;
+import MyFirstApp.Util.RootService;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,17 @@ public class TransBean implements Processor {
 		marsh = jaxbCTX.createMarshaller();
 	}
 
+	@Autowired
+	private RootService rootService;
 
 	@Override
 	public void process(Exchange exc) throws Exception{
 		Reader custom = exc.getIn().getBody(Reader.class);
 		Root msg = (Root) unmarsh.unmarshal(custom);
 
-		msg.setA(msg.getA()+env.getProperty("txttoadd"));
+		rootService.insertRoot(msg);
+
+		msg.setA(msg.getA()+env.getProperty("app.txttoadd"));
 
 		marsh.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		StringWriter sw = new StringWriter();

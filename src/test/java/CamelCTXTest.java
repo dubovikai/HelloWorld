@@ -51,7 +51,7 @@ public class CamelCTXTest extends CamelTestSupport {
 		objSend.setA("TestMessage");
 
 		Root objReceive = new Root();
-		objReceive.setA("TestMessage"+env.getProperty("txttoadd"));
+		objReceive.setA("TestMessage"+env.getProperty("app.txttoadd"));
 
 		String TestMsgSend = tb.ConvertRootToStringXML(objSend);
 

@@ -51,17 +51,15 @@ public class AppConfig extends CamelConfiguration{
 		LocalSessionFactoryBean ret = new LocalSessionFactoryBean();
 		ret.setDataSource(dataSource());
 		ret.setAnnotatedClasses(Root.class);
-		Properties hibernateProps = new Properties();
-		hibernateProps.setProperty("hibernate.dialect",env.getProperty("hibernate.dialect"));
+		Properties hibernateProps = ret.getHibernateProperties();
 		hibernateProps.setProperty("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
-		ret.setHibernateProperties(hibernateProps);
 		return ret;
 	}
 
 	@Bean
 	public HibernateTransactionManager transactionManager(){
-		HibernateTransactionManager ret = new HibernateTransactionManager();
-		ret.setSessionFactory((SessionFactory) sessionFactory());
+		HibernateTransactionManager ret = new HibernateTransactionManager(sessionFactory().getObject());
+		ret.setAutodetectDataSource(true);
 		return ret;
 	}
 
@@ -81,10 +79,10 @@ public class AppConfig extends CamelConfiguration{
 	@Override
 	protected void setupCamelContext(CamelContext camelContext) throws Exception {
 		// setup the ActiveMQ component
-		ActiveMQComponent compMQ =  activeMQComponent(env.getProperty("amqhost.url"));
+		ActiveMQComponent compMQ =  activeMQComponent(env.getProperty("amq.url"));
 		compMQ.setTestConnectionOnStartup(true);
-		compMQ.setUsername(env.getProperty("username"));
-		compMQ.setPassword(env.getProperty("password"));
+		compMQ.setUsername(env.getProperty("amq.username"));
+		compMQ.setPassword(env.getProperty("amq.password"));
 		camelContext.addComponent("activemq", compMQ);
 	}
 }

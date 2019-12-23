@@ -6,3 +6,4 @@
 *.txt
 !Readme.txt
 *.cer
+*.sqlite
